@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Security Awareness Research</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="background-glow"></div>
+
+    <div class="glass-container">
+        
+        <header>
+            <div class="badge">SECURE LABS v1.0</div>
+            <h2 id="screen-title">Identity Verification</h2>
+        </header>
+
+        <div id="step-role" class="screen fade-in">
+            <p class="subtitle">Select your category to begin the session.</p>
+            <div class="button-grid">
+                <button class="btn-card" onclick="app.setRole('Student')">
+                    <span class="icon">🎓</span>
+                    <span>Student</span>
+                </button>
+                <button class="btn-card" onclick="app.setRole('Faculty')">
+                    <span class="icon">👨‍🏫</span>
+                    <span>Faculty</span>
+                </button>
+                <button class="btn-card" onclick="app.setRole('Staff')">
+                    <span class="icon">💼</span>
+                    <span>Admin Staff</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="step-demo" class="screen hidden">
+            <p class="subtitle">Anonymous Demographic Data</p>
+            
+            <div class="form-group">
+                <label>Age Group</label>
+                <select id="input-age">
+                    <option value="" disabled selected>Select...</option>
+                    <option value="18-22">18 - 22 (Gen Z)</option>
+                    <option value="23-35">23 - 35 (Millennials)</option>
+                    <option value="36-50">36 - 50</option>
+                    <option value="50+">50+</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Gender</label>
+                <select id="input-gender">
+                    <option value="" disabled selected>Select...</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+            </div>
+
+            <button class="btn-main" onclick="app.startSurvey()">Initialize Session &rarr;</button>
+        </div>
+
+        <div id="step-test" class="screen hidden">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-fill"></div>
+            </div>
+            <p class="progress-text" id="progress-text">Email 1 / 10</p>
+
+            <div class="image-frame">
+                <img id="email-img" src="" alt="Email Content">
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="input-reason" placeholder="⚠️ Required: Why is this safe or malicious?" autocomplete="off">
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-action safe" onclick="app.recordAnswer('Legitimate')">
+                    ✅ Legitimate
+                </button>
+                <button class="btn-action danger" onclick="app.recordAnswer('Malicious')">
+                    🚨 Phishing
+                </button>
+            </div>
+        </div>
+
+        <div id="step-loading" class="screen hidden">
+            <div class="spinner"></div>
+            <p style="margin-top: 15px;">Encrypting & Uploading Responses...</p>
+        </div>
+
+        <div id="step-end" class="screen hidden">
+            <div class="success-icon">🎉</div>
+            <h2>Session Complete</h2>
+            <p>Your contribution has been recorded.</p>
+            <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 10px;">You can now close this tab.</p>
+        </div>
+
+        <div id="step-blocked" class="screen hidden">
+            <div class="success-icon">⛔</div>
+            <h2>Access Denied</h2>
+            <p>You have already completed this survey.</p>
+            <p style="color: #94a3b8; font-size: 0.9rem;">To ensure data validity, only one submission per person is allowed.</p>
+        </div>
+
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

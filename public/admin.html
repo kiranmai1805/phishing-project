@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Secure Labs</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Specific styles for the Admin buttons */
+        .btn-download {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin: 15px 0;
+            text-decoration: none;
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s, filter 0.2s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-download:hover { transform: translateY(-3px); filter: brightness(1.2); }
+        
+        /* Button Colors */
+        .blue { background-color: rgba(59, 130, 246, 0.6); }
+        .green { background-color: rgba(16, 185, 129, 0.6); }
+        .orange { background-color: rgba(245, 158, 11, 0.6); }
+        .purple { background-color: rgba(139, 92, 246, 0.6); border: 1px solid rgba(139, 92, 246, 0.4); }
+    </style>
+</head>
+<body>
+
+    <div class="background-glow"></div>
+
+    <div class="glass-container">
+        
+        <header>
+            <div class="badge" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">ADMIN ACCESS</div>
+            <h2>Data Dashboard</h2>
+            <p class="subtitle">Securely export research datasets to Excel (.csv)</p>
+        </header>
+
+        <a href="/admin/download?role=Student&pass=secret123" class="btn-download blue">
+            <span style="margin-right: 10px;">🎓</span> Download STUDENT Data
+        </a>
+
+        <a href="/admin/download?role=Faculty&pass=secret123" class="btn-download green">
+            <span style="margin-right: 10px;">👨‍🏫</span> Download FACULTY Data
+        </a>
+
+        <a href="/admin/download?role=Staff&pass=secret123" class="btn-download orange">
+            <span style="margin-right: 10px;">💼</span> Download STAFF Data
+        </a>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+
+        <a href="/admin/download?pass=secret123" class="btn-download purple">
+            <span style="margin-right: 10px;">📂</span> Download ALL Data (Combined)
+        </a>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+/* GLOBAL RESET */
+:root {
+    --bg-dark: #0f172a;
+    --glass: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.1);
+    --primary: #3b82f6;
+    --success: #10b981;
+    --danger: #ef4444;
+    --text: #f1f5f9;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Background Glow */
+.background-glow {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(0,0,0,0) 70%);
+    z-index: -1;
+}
+
+/* MAIN CARD */
+.glass-container {
+    width: 90%;
+    max-width: 600px;
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+/* HEADERS */
+header { margin-bottom: 2rem; }
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(59,130,246,0.2);
+    color: #60a5fa;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+h2 { margin: 0; font-weight: 600; font-size: 1.5rem; }
+.subtitle { color: #94a3b8; margin-top: 5px; font-size: 0.95rem; }
+
+/* INPUTS */
+.form-group { margin-bottom: 1.5rem; text-align: left; }
+label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #cbd5e1; }
+select, input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    box-sizing: border-box;
+}
+select:focus, input:focus { border-color: var(--primary); }
+
+/* ROLE BUTTONS */
+.button-grid { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.btn-card {
+    flex: 1; min-width: 100px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.2s;
+}
+.btn-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+.btn-card .icon { display: block; font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+/* ACTION BUTTONS */
+.btn-main {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.btn-main:hover { background: #2563eb; }
+
+.action-buttons { display: flex; gap: 15px; margin-top: 15px; }
+.btn-action {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+    font-size: 1rem;
+    transition: transform 0.1s;
+}
+.btn-action:active { transform: scale(0.98); }
+.safe { background-color: var(--success); }
+.danger { background-color: var(--danger); }
+
+/* IMAGE & PROGRESS */
+.image-frame {
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+    display: flex; align-items: center; justify-content: center;
+}
+img { max-width: 100%; display: block; }
+
+.progress-container {
+    height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;
+}
+.progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
+.progress-text { font-size: 0.85rem; color: #94a3b8; margin-top: 8px; text-align: right; }
+
+/* UTILS */
+.hidden { display: none; }
+.fade-in { animation: fadeIn 0.5s ease-in; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ERROR SHAKE ANIMATION */
+.input-error { border: 1px solid var(--danger) !important; animation: shake 0.3s; }
+@keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
+
+.spinner {
+    border: 4px solid rgba(255,255,255,0.1);
+    border-left-color: var(--primary);
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
