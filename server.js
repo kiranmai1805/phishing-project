@@ -10,14 +10,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public')); 
 
-// --- Database Connection ---
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("✅ MongoDB Connected"))
     .catch(err => console.log("❌ DB Error:", err));
 
-// --- Schema ---
 const ResponseSchema = new mongoose.Schema({
-    participant_id: String, 
+    participant_id: String,
     role: String,
     age_group: String,
     gender: String,
@@ -29,18 +27,15 @@ const ResponseSchema = new mongoose.Schema({
             time_taken_ms: Number
         }
     ],
-    submitted_at: Date // Removed 'default' to handle it manually
+    submitted_at: Date
 });
 const Response = mongoose.model('Response', ResponseSchema);
 
-// --- Save Route (THE FIX IS HERE) ---
+// --- SAVE ROUTE ---
 app.post('/api/submit', async (req, res) => {
     try {
         const submission = req.body;
-        
-        // FORCE the current server time right now
         submission.submitted_at = new Date(); 
-
         const newResponse = new Response(submission);
         await newResponse.save();
         res.status(200).json({ message: "Data Saved" });
@@ -50,7 +45,7 @@ app.post('/api/submit', async (req, res) => {
     }
 });
 
-// --- Wide Format Excel Download ---
+// --- EXPORT ROUTE (Updated: NO DATE COLUMN) ---
 app.get('/admin/download', async (req, res) => {
     const password = req.query.pass;
     const requestedRole = req.query.role;
@@ -70,23 +65,16 @@ app.get('/admin/download', async (req, res) => {
         let flatData = [];
 
         data.forEach(user => {
-            // SAFE DATE HANDLING:
-            // If date exists, format it. If not (old data), put "N/A".
-            let dateStr = "N/A";
-            if (user.submitted_at) {
-                dateStr = new Date(user.submitted_at).toISOString().split('T')[0];
-            }
+            // [REMOVED] The Date formatting logic is gone.
 
-            // 1. Create the base row
             let row = {
                 "Student_Name_ID": user.participant_id,
                 "Role": user.role,
                 "Age": user.age_group,
-                "Gender": user.gender,
-                "Date": dateStr // <--- Using the fixed date string
+                "Gender": user.gender
+                // [REMOVED] "Date" column is gone.
             };
 
-            // 2. Add columns for the 10 answers
             user.answers.forEach((ans, index) => {
                 const num = index + 1; 
                 row[`Q${num}_Image`] = ans.email_id;
@@ -98,7 +86,6 @@ app.get('/admin/download', async (req, res) => {
             flatData.push(row);
         });
 
-        // Convert to CSV
         const json2csvParser = new Parser();
         const csv = json2csvParser.parse(flatData);
 
@@ -109,6 +96,23 @@ app.get('/admin/download', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).send("Server Error");
+    }
+});
+
+// --- [NEW] DANGEROUS RESET ROUTE ---
+// Visits this link to DELETE ALL DATA
+app.get('/admin/reset-database', async (req, res) => {
+    const password = req.query.pass;
+    
+    if (password !== process.env.ADMIN_PASS) {
+        return res.status(403).send("Access Denied: You need the password to wipe the DB.");
+    }
+
+    try {
+        await Response.deleteMany({}); // Deletes everything!
+        res.send("✅ DATABASE WIPED. All previous records are gone. You can start fresh.");
+    } catch (error) {
+        res.status(500).send("Error deleting data.");
     }
 });
 
