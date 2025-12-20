@@ -1,35 +1,77 @@
 const app = {
-    // 1. CONFIG: Image list
-    images: ['email1.jpg', 'email2.jpg', 'email3.jpg', 'email4.jpg', 'email5.jpg', 'email6.jpg', 'email7.jpg', 'email8.jpg', 'email9.jpg', 'email10.jpg'],
+    // 1. CONFIG: Image list (Updated to .png)
+    images: ['email1.png', 'email2.png', 'email3.png', 'email4.png', 'email5.png', 'email6.png', 'email7.png', 'email8.png', 'email9.png', 'email10.png'],
     
     currentIdx: 0,
     startTime: 0,
     
     data: {
+        participant_id: '',
         role: '',
-        age: '',
-        gender: '', // New Field
+        age_group: '',
+        gender: '',
         answers: []
+    },
+
+    // --- INIT: Check if user is blocked ---
+    init: () => {
+        // 1. [NEW] Developer Backdoor
+        // Check if URL has ?mode=test
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('mode') === 'test') {
+            console.log("👨‍💻 Developer Mode: Blocking Disabled");
+            return; // Stop here! Do not check localStorage.
+        }
+
+        // 2. Standard Security Check
+        const hasFinished = localStorage.getItem('phishing_survey_done');
+        if (hasFinished === 'true') {
+            app.switchScreen('step-role', 'step-blocked');
+            document.getElementById('screen-title').innerText = "Access Denied";
+        }
     },
 
     // 2. Navigation Logic
     setRole: (role) => {
         app.data.role = role;
+
+        // --- DYNAMIC LABELS ---
+        // Change text based on role (Student -> Roll No, Faculty -> Name)
+        const label = document.getElementById('label-id');
+        const input = document.getElementById('input-id');
+
+        if (label && input) {
+            if (role === 'Student') {
+                label.innerText = "Roll Number";
+                input.placeholder = "e.g., (A22/A23/A24/A25)XX";
+            } else {
+                label.innerText = "Full Name";
+                input.placeholder = "e.g.,  A. Kumar";
+            }
+        }
+        
         app.switchScreen('step-role', 'step-demo');
     },
 
     startSurvey: () => {
-        const age = document.getElementById('input-age').value;
+        const id = document.getElementById('input-id').value.trim();
+        const age = document.getElementById('input-age').value.trim();
         const gender = document.getElementById('input-gender').value;
 
-        if (!age || !gender) {
-            alert("Please select both Age and Gender to proceed.");
+        // Validation
+        if (!id || !age || !gender) {
+            alert("Please fill in all details: Name/ID, Age, and Gender.");
             return;
         }
 
-        app.data.age = age;
+        app.data.participant_id = id;
+        app.data.age_group = age;
         app.data.gender = gender;
         
+        // [NEW] EXPAND THE BOX (Wide Mode Animation)
+        const container = document.querySelector('.glass-container');
+        if (container) container.classList.add('wide-mode');
+
         app.switchScreen('step-demo', 'step-test');
         app.loadEmail();
     },
@@ -55,9 +97,10 @@ const app = {
         // Reset Input
         const inputReason = document.getElementById('input-reason');
         inputReason.value = '';
-        inputReason.classList.remove('input-error'); // Remove red border if it was there
+        inputReason.classList.remove('input-error');
+        inputReason.placeholder = "⚠️ Required: Why is this safe or malicious?";
         
-        // Start Internal Timer (This is the invisible clock!)
+        // Start Internal Timer
         app.startTime = Date.now();
     },
 
@@ -100,6 +143,9 @@ const app = {
             });
 
             if (response.ok) {
+                // BLOCK USER FOR FUTURE
+                localStorage.setItem('phishing_survey_done', 'true');
+
                 app.switchScreen('step-loading', 'step-end');
                 document.getElementById('screen-title').innerText = "Done";
             } else {
@@ -114,8 +160,13 @@ const app = {
 
     // Helper
     switchScreen: (hideId, showId) => {
-        document.getElementById(hideId).classList.add('hidden');
-        document.getElementById(showId).classList.remove('hidden');
-        document.getElementById(showId).classList.add('fade-in');
+        if (document.getElementById(hideId)) document.getElementById(hideId).classList.add('hidden');
+        if (document.getElementById(showId)) {
+            document.getElementById(showId).classList.remove('hidden');
+            document.getElementById(showId).classList.add('fade-in');
+        }
     }
 };
+
+// Start App
+window.onload = app.init;

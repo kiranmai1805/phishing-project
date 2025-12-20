@@ -37,17 +37,16 @@
         </div>
 
         <div id="step-demo" class="screen hidden">
-            <p class="subtitle">Anonymous Demographic Data</p>
+            <p class="subtitle">Participant Details</p>
             
             <div class="form-group">
-                <label>Age Group</label>
-                <select id="input-age">
-                    <option value="" disabled selected>Select...</option>
-                    <option value="18-22">18 - 22 (Gen Z)</option>
-                    <option value="23-35">23 - 35 (Millennials)</option>
-                    <option value="36-50">36 - 50</option>
-                    <option value="50+">50+</option>
-                </select>
+                <label id="label-id">Name / ID</label> 
+                <input type="text" id="input-id" placeholder="..." autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label>Age</label>
+                <input type="number" id="input-age" placeholder="Enter your age (e.g., 21)" min="10" max="99">
             </div>
 
             <div class="form-group">
