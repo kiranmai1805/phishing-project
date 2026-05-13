@@ -57,20 +57,16 @@ git clone [Your_Repository_URL]
 cd phishing-research-app
 npm install
 
-
 Environment Configuration
 
 Create a .env file in the project root directory containing the following variables:
-
-MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/PhishingData
+MONGO_URI=mongodb+srv://:@cluster.mongodb.net/PhishingData
 ADMIN_PASS=your_secure_password
 PORT=3000
-
 
 Server Execution
 
 npm start
-
 
 The application will initialize on http://localhost:3000.
 
